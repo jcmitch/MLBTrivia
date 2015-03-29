@@ -20,7 +20,7 @@ public class QuizActivity extends Activity {
     int qid=0;
     Question currentQ;
     TextView txtQuestion;
-    RadioButton rda, rdb, rdc;
+    RadioButton rda, rdb, rdc, rdd, rde;
     Button butNext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,8 @@ public class QuizActivity extends Activity {
         rda=(RadioButton)findViewById(R.id.radio0);
         rdb=(RadioButton)findViewById(R.id.radio1);
         rdc=(RadioButton)findViewById(R.id.radio2);
+        rdd=(RadioButton)findViewById(R.id.radio3);
+        rde=(RadioButton)findViewById(R.id.radio4);
         butNext=(Button)findViewById(R.id.button1);
         setQuestionView();
         butNext.setOnClickListener(new View.OnClickListener() {
@@ -40,11 +42,9 @@ public class QuizActivity extends Activity {
             public void onClick(View v) {
                 RadioGroup grp=(RadioGroup)findViewById(R.id.radioGroup1);
                 RadioButton answer=(RadioButton)findViewById(grp.getCheckedRadioButtonId());
-                Log.d("yourans", currentQ.getANSWER()+" "+answer.getText());
                 if(currentQ.getANSWER().equals(answer.getText()))
                 {
                     score++;
-                    Log.d("score", "Your score"+score);
                 }
                 if(qid<5){
                     currentQ=quesList.get(qid);
@@ -72,6 +72,8 @@ public class QuizActivity extends Activity {
         rda.setText(currentQ.getOPTA());
         rdb.setText(currentQ.getOPTB());
         rdc.setText(currentQ.getOPTC());
+        rdd.setText(currentQ.getOPTD());
+        rde.setText(currentQ.getOPTE());
         qid++;
     }
 }
