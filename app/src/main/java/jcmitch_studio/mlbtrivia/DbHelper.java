@@ -40,6 +40,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
     private void addQuestions()
     {
+        //test
         Question q1=new Question("Who won the World Series in 2014?",
                 "Royals", "Giants", "Tigers", "Giants");
         this.addQuestion(q1);
