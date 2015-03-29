@@ -46,7 +46,7 @@ public class QuizActivity extends Activity {
                 {
                     score++;
                 }
-                if(qid<5){
+                if(qid<45){
                     currentQ=quesList.get(qid);
                     setQuestionView();
                 }else{
