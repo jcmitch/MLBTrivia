@@ -46,7 +46,7 @@ public class QuizActivity extends Activity {
                 {
                     score++;
                 }
-                if(qid<5){
+                if(qid<45){
                     currentQ=quesList.get(qid);
                     setQuestionView();
                 }else{
@@ -74,6 +74,7 @@ public class QuizActivity extends Activity {
         rdc.setText(currentQ.getOPTC());
         rdd.setText(currentQ.getOPTD());
         rde.setText(currentQ.getOPTE());
+        rda.setChecked(true);
         qid++;
     }
 }

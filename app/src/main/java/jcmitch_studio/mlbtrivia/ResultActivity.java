@@ -14,25 +14,19 @@ public class ResultActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
-//get rating bar object
-        RatingBar bar=(RatingBar)findViewById(R.id.ratingBar1);
-//get text view
         TextView t=(TextView)findViewById(R.id.textResult);
-//get score
         Bundle b = getIntent().getExtras();
         int score= b.getInt("score");
-//display score
-        bar.setRating(score);
-        switch (score)
-        {
-            case 1:
-            case 2: t.setText("Oopsie! Better Luck Next Time!");
-                break;
-            case 3:
-            case 4:t.setText("Hmmmm.. Someone's been reading a lot of trivia");
-                break;
-            case 5:t.setText("Who are you? A trivia wizard???");
-                break;
+        if (score < 15) {
+            t.setText("Wow, kinda dumb aren't ya?");
+        } else if (score < 25) {
+            t.setText("Meh... not that great.");
+        } else if (score < 40) {
+            t.setText("Getting close to a respectable score.");
+        } else if (score < 45) {
+            t.setText("Alright, pretty good!");
+        } else {
+            t.setText("PERFECT!!!");
         }
     }
     @Override
