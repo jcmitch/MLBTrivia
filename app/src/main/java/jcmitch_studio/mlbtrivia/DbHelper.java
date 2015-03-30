@@ -193,7 +193,6 @@ public class DbHelper extends SQLiteOpenHelper {
         dbase=this.getReadableDatabase();
         Cursor cursor = dbase.rawQuery(selectQuery, null);
         int randNumb = 0;
-        long seed = System.nanoTime();
         if (cursor.moveToFirst()) {
             do {
                 Question quest = new Question();
@@ -208,6 +207,7 @@ public class DbHelper extends SQLiteOpenHelper {
                         ansList.add(aryTeams[randNumb]);
                     }
                 }
+                long seed = System.nanoTime();
                 Collections.shuffle(ansList, new Random(seed));
                 quest.setOPTA(ansList.get(0));
                 quest.setOPTB(ansList.get(1));
