@@ -4,7 +4,9 @@ package jcmitch_studio.mlbtrivia;
  * Created by jerem_000 on 3/28/2015.
  */
   import java.util.ArrayList;
+  import java.util.Collections;
   import java.util.List;
+  import java.util.Random;
   import android.content.ContentValues;
   import android.content.Context;
   import android.database.Cursor;
@@ -33,9 +35,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_YEAR
                 + " TEXT, " + KEY_WINNER+ " TEXT, "+KEY_LOSER +" TEXT)";
         db.execSQL(sql);
-        //addQuestions();
         addWinners();
-        //db.close();
     }
     private void addWinners() {
         String[ ][ ] arySeries = new String[45][2];
@@ -140,10 +140,22 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put(KEY_YEAR, Integer.toString(year));
         values.put(KEY_WINNER, winner);
         values.put(KEY_LOSER, loser);
-        // Inserting Row
         dbase.insert(TABLE_WINNERS, null, values);
     }
-    private void addTeams() {
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldV, int newV) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_WINNERS);
+        onCreate(db);
+    }
+    private static int randInt(int min, int max) {
+        Random rand = new Random();
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+        return randomNum;
+    }
+    public List<Question> getAllQuestions() {
+        List<Question> quesList = new ArrayList<Question>();
+        List<String> ansList = new ArrayList<String>();
+
         String[ ] aryTeams = new String[30];
         aryTeams[0] = "Orioles";
         aryTeams[1] = "Red Sox";
@@ -175,36 +187,37 @@ public class DbHelper extends SQLiteOpenHelper {
         aryTeams[27] = "Giants";
         aryTeams[28] = "Cardinals";
         aryTeams[29] = "Nationals";
-    }
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldV, int newV) {
-        // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_WINNERS);
-        // Create tables again
-        onCreate(db);
-    }
-    public List<Question> getAllQuestions() {
-        List<Question> quesList = new ArrayList<Question>();
+
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_WINNERS;
         dbase=this.getReadableDatabase();
         Cursor cursor = dbase.rawQuery(selectQuery, null);
-        // looping through all rows and adding to list
+        int randNumb = 0;
+        long seed = System.nanoTime();
         if (cursor.moveToFirst()) {
             do {
                 Question quest = new Question();
                 quest.setID(cursor.getInt(0));
                 quest.setQUESTION("Who won the World Series in "+cursor.getString(1)+"?");
                 quest.setANSWER(cursor.getString(2));
-                quest.setOPTA(cursor.getString(2));
-                quest.setOPTB(cursor.getString(3));
-                quest.setOPTC("foo");
-                quest.setOPTD("Bar");
-                quest.setOPTE("Blah");
+                ansList.add(cursor.getString(2));
+                ansList.add(cursor.getString(3));
+                while (ansList.size() < 5) {
+                    randNumb = randInt(0,29);
+                    if (ansList.indexOf(aryTeams[randNumb]) == -1) {
+                        ansList.add(aryTeams[randNumb]);
+                    }
+                }
+                Collections.shuffle(ansList, new Random(seed));
+                quest.setOPTA(ansList.get(0));
+                quest.setOPTB(ansList.get(1));
+                quest.setOPTC(ansList.get(2));
+                quest.setOPTD(ansList.get(3));
+                quest.setOPTE(ansList.get(4));
                 quesList.add(quest);
+                ansList.clear();
             } while (cursor.moveToNext());
         }
-        // return quest list
         return quesList;
     }
 }

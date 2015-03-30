@@ -74,6 +74,7 @@ public class QuizActivity extends Activity {
         rdc.setText(currentQ.getOPTC());
         rdd.setText(currentQ.getOPTD());
         rde.setText(currentQ.getOPTE());
+        rda.setChecked(true);
         qid++;
     }
 }
