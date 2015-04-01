@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">MLB Trivia</string>
-
-    <string name="str_next">Next</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_result">MLB Trivia Result</string>
 </resources>
