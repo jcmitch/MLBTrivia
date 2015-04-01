@@ -11,8 +11,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 public class QuizActivity extends Activity {
     List<Question> quesList;
@@ -20,8 +18,7 @@ public class QuizActivity extends Activity {
     int qid=0;
     Question currentQ;
     TextView txtQuestion;
-    RadioButton rda, rdb, rdc, rdd, rde;
-    Button butNext;
+    Button butA, butB, butC, butD, butE;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,35 +27,29 @@ public class QuizActivity extends Activity {
         quesList=db.getAllQuestions();
         currentQ=quesList.get(qid);
         txtQuestion=(TextView)findViewById(R.id.textView1);
-        rda=(RadioButton)findViewById(R.id.radio0);
-        rdb=(RadioButton)findViewById(R.id.radio1);
-        rdc=(RadioButton)findViewById(R.id.radio2);
-        rdd=(RadioButton)findViewById(R.id.radio3);
-        rde=(RadioButton)findViewById(R.id.radio4);
-        butNext=(Button)findViewById(R.id.button1);
+        butA=(Button)findViewById(R.id.button1);
+        butB=(Button)findViewById(R.id.button2);
+        butC=(Button)findViewById(R.id.button3);
+        butD=(Button)findViewById(R.id.button4);
+        butE=(Button)findViewById(R.id.button5);
         setQuestionView();
-        butNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RadioGroup grp=(RadioGroup)findViewById(R.id.radioGroup1);
-                RadioButton answer=(RadioButton)findViewById(grp.getCheckedRadioButtonId());
-                if(currentQ.getANSWER().equals(answer.getText()))
-                {
-                    score++;
-                }
-                if(qid<45){
-                    currentQ=quesList.get(qid);
-                    setQuestionView();
-                }else{
-                    Intent intent = new Intent(QuizActivity.this, ResultActivity.class);
-                    Bundle b = new Bundle();
-                    b.putInt("score", score); //Your score
-                    intent.putExtras(b); //Put your score to your next Intent
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        });
+    }
+    public void onClick(View v) {
+        Button answer = (Button)findViewById(v.getId());
+        if(currentQ.getANSWER().equals(answer.getText())) {
+            score++;
+        }
+        if(qid<45){
+            currentQ=quesList.get(qid);
+            setQuestionView();
+        }else{
+            Intent intent = new Intent(QuizActivity.this, ResultActivity.class);
+            Bundle b = new Bundle();
+            b.putInt("score", score); //Your score
+            intent.putExtras(b); //Put your score to your next Intent
+            startActivity(intent);
+            finish();
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -69,12 +60,11 @@ public class QuizActivity extends Activity {
     private void setQuestionView()
     {
         txtQuestion.setText(currentQ.getQUESTION());
-        rda.setText(currentQ.getOPTA());
-        rdb.setText(currentQ.getOPTB());
-        rdc.setText(currentQ.getOPTC());
-        rdd.setText(currentQ.getOPTD());
-        rde.setText(currentQ.getOPTE());
-        rda.setChecked(true);
+        butA.setText(currentQ.getOPTA());
+        butB.setText(currentQ.getOPTB());
+        butC.setText(currentQ.getOPTC());
+        butD.setText(currentQ.getOPTD());
+        butE.setText(currentQ.getOPTE());
         qid++;
     }
 }
