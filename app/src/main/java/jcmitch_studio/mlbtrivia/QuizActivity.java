@@ -12,6 +12,9 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Chronometer;
+import android.os.SystemClock;
+
 public class QuizActivity extends Activity {
     List<Question> quesList;
     int score=0;
@@ -19,6 +22,7 @@ public class QuizActivity extends Activity {
     Question currentQ;
     TextView txtQuestion;
     Button butA, butB, butC, butD, butE;
+    Chronometer gameTimer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +36,9 @@ public class QuizActivity extends Activity {
         butC=(Button)findViewById(R.id.button3);
         butD=(Button)findViewById(R.id.button4);
         butE=(Button)findViewById(R.id.button5);
+        gameTimer = (Chronometer)findViewById(R.id.gameTimer);
+        gameTimer.setBase(SystemClock.elapsedRealtime());
+        gameTimer.start();
         setQuestionView();
     }
     public void onClick(View v) {
@@ -43,9 +50,12 @@ public class QuizActivity extends Activity {
             currentQ=quesList.get(qid);
             setQuestionView();
         }else{
+            gameTimer.stop();
+            long elapsedMillis = SystemClock.elapsedRealtime() - gameTimer.getBase();
             Intent intent = new Intent(QuizActivity.this, ResultActivity.class);
             Bundle b = new Bundle();
             b.putInt("score", score); //Your score
+            b.putLong("totalTime", elapsedMillis);
             intent.putExtras(b); //Put your score to your next Intent
             startActivity(intent);
             finish();

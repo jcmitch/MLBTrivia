@@ -14,20 +14,34 @@ public class ResultActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
-        TextView t=(TextView)findViewById(R.id.textResult);
+        TextView message=(TextView)findViewById(R.id.textResult);
+        TextView time=(TextView)findViewById(R.id.totalTime);
         Bundle b = getIntent().getExtras();
-        int score= b.getInt("score");
+        int score=b.getInt("score");
+        long totalTime=b.getLong("totalTime");
         if (score < 15) {
-            t.setText("Wow, kinda dumb aren't ya?");
+            message.setText("Wow, kinda dumb aren't ya?");
         } else if (score < 25) {
-            t.setText("Meh... not that great.");
+            message.setText("Meh... not that great.");
         } else if (score < 40) {
-            t.setText("Getting close to a respectable score.");
+            message.setText("Getting close to a respectable score.");
         } else if (score < 45) {
-            t.setText("Alright, pretty good!");
+            message.setText("Alright, pretty good!");
         } else {
-            t.setText("PERFECT!!!");
+            message.setText("PERFECT!!!");
         }
+        int h   = (int)(totalTime /3600000);
+        int m = (int)(totalTime - h*3600000)/60000;
+        int s= (int)(totalTime - h*3600000- m*60000)/1000 ;
+        String mm = m < 10 ? "0"+m: m+"";
+        String ss = s < 10 ? "0"+s: s+"";
+        String timeText = "";
+        if (h > 0) {
+            timeText = "You took too long";
+        } else {
+            timeText = mm+":"+ss;
+        }
+        time.setText("Total time: "+timeText);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
