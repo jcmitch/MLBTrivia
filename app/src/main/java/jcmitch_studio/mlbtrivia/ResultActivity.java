@@ -16,9 +16,15 @@ public class ResultActivity extends Activity {
         setContentView(R.layout.activity_result);
         TextView message=(TextView)findViewById(R.id.textResult);
         TextView time=(TextView)findViewById(R.id.totalTime);
+        TextView scoreText=(TextView)findViewById(R.id.score);
         Bundle b = getIntent().getExtras();
+
+        // Display total score
         int score=b.getInt("score");
-        long totalTime=b.getLong("totalTime");
+        int totalQuestions = b.getInt("totalQuestions");
+        scoreText.setText(String.valueOf(score) + " of " + String.valueOf(totalQuestions));
+
+        // Display result message
         if (score < 15) {
             message.setText("Wow, kinda dumb aren't ya?");
         } else if (score < 25) {
@@ -30,6 +36,9 @@ public class ResultActivity extends Activity {
         } else {
             message.setText("PERFECT!!!");
         }
+
+        // Calculate total time
+        long totalTime=b.getLong("totalTime");
         int h   = (int)(totalTime /3600000);
         int m = (int)(totalTime - h*3600000)/60000;
         int s= (int)(totalTime - h*3600000- m*60000)/1000 ;
